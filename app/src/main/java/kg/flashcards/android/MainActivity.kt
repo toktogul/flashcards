@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_photo_dialog.view.*
 
@@ -28,6 +31,8 @@ class MainActivity : Activity(), View.OnClickListener, AdapterListener {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         fetchAllFiles()
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(list)
     }
 
     private fun fetchAllFiles() {
