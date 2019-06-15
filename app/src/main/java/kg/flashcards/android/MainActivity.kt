@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_photo_dialog.view.*
 
@@ -26,21 +24,25 @@ class MainActivity : Activity(), View.OnClickListener, AdapterListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fileFinder = FileFinder(applicationContext)
-        add.setOnClickListener(this)
-        adapter = FlashcardsAdapter(this)
-        list.adapter = adapter
-        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        list.layoutManager = linearLayoutManager
+        initList()
         fetchAllFiles()
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(list)
 
+        add.setOnClickListener(this)
         next.setOnClickListener(this)
         previous.setOnClickListener(this)
     }
 
+    private fun initList() {
+        adapter = FlashcardsAdapter(this)
+        list.adapter = adapter
+        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        list.layoutManager = linearLayoutManager
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(list)
+    }
+
     private fun fetchAllFiles() {
+        fileFinder = FileFinder(applicationContext)
         val files = applicationContext.filesDir.listFiles()!!
         val flashcards = mutableListOf<FlashcardItem>()
         files.forEach {
