@@ -36,19 +36,6 @@ class MainActivity : Activity(), View.OnClickListener, AdapterListener {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(list)
 
-
-        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                Log.e("happy", "onScrolled: dx: $dx, dy: $dy")
-            }
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                Log.e("happy", "onScrollStateChanged:$newState ")
-            }
-        })
-
         next.setOnClickListener(this)
         previous.setOnClickListener(this)
     }
