@@ -19,8 +19,9 @@ const val GALLERY_CODE = 124
 
 class MainActivity : Activity(), View.OnClickListener, AdapterListener {
     private lateinit var fileFinder: FileFinder
-
     private lateinit var adapter: FlashcardsAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,10 +30,27 @@ class MainActivity : Activity(), View.OnClickListener, AdapterListener {
         add.setOnClickListener(this)
         adapter = FlashcardsAdapter(this)
         list.adapter = adapter
-        list.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        list.layoutManager = linearLayoutManager
         fetchAllFiles()
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(list)
+
+
+        list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                Log.e("happy", "onScrolled: dx: $dx, dy: $dy")
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.e("happy", "onScrollStateChanged:$newState ")
+            }
+        })
+
+        next.setOnClickListener(this)
+        previous.setOnClickListener(this)
     }
 
     private fun fetchAllFiles() {
@@ -74,9 +92,25 @@ class MainActivity : Activity(), View.OnClickListener, AdapterListener {
     }
 
     override fun onClick(v: View?) {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.app_name)), GALLERY_CODE)
+        when (v) {
+            add -> {
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.app_name)), GALLERY_CODE)
+            }
+            next -> {
+                var pos = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+                val total = adapter.itemCount - 1
+                pos = if (total == pos) pos else ++pos
+                list.scrollToPosition(pos)
+            }
+
+            previous -> {
+                var pos = linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+                pos = if (pos == 0) pos else --pos
+                list.scrollToPosition(pos)
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.add_photo_dialog.view.*
 import java.io.File
 
 class FlashcardsAdapter(private val listener: AdapterListener) : RecyclerView.Adapter<FlashcardViewHolder>() {

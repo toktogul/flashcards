@@ -2,4 +2,7 @@
     <string name="app_name">Flashcards</string>
     <string name="enter_value">Введите текст</string>
     <string name="delete_item">Удалить элемент?</string>
+    <string name="next">Следующий</string>
+    <string name="previous">Предыдущий</string>
+    <string name="add">Добавить</string>
 </resources>
